@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+C-Cart
+{% endblock %}
+
+{% block content %}
+
+{% if not cart_items %}
+<p><center>YOUR C-CART IS EMPTY</center></p><br>
+<center><a href="{% url 'e_app:all_category_products' %}">click here to shop</a></center>
+{% else %}
+<strong><center>Your items</center></strong>
+{% for cart_item in cart_items %}
+<div class="row">
+   
+        <div class="col-4 col-sm-4 col-md-4 col-lg-3 text-center">
+<img style="height: 150px;" src="{{cart_item.product.image.url}}">
+</div>
+<div class="col-8 col-sm-8 col-md-8 col-lg-9 mx-auto">
+
+
+{{cart_item.product.name}}<br>
+SKU:{{cart_item.product.id}}<br>
+Unit price:${{cart_item.product.price}}<br>
+QTY: {{cart_item.quantity}} x $ {{cart_item.product.price}} = $ {{cart_item.sub_total}}<br>
+{% if cart_item.quantity < cart_item.product.stock %}
+<a href="{% url 'cart:add_cart' cart_item.product.id %}"><i class="fas fa-plus"></a></i>&nbsp;
+<a href="{% url 'cart:cart_remove' cart_item.product.id %}"><i class="fas fa-minus"></i></a>&nbsp;
+<a href="{% url 'cart:full_remove' cart_item.product.id %}"><i class="fas fa-trash"></i></a>
+{% else %}
+<a href="{% url 'cart:cart_remove' cart_item.product.id %}"><i class="fas fa-minus"></i></a>&nbsp;
+<a href="{% url 'cart:full_remove' cart_item.product.id %}"><i class="fas fa-trash"></i></a>
+{% endif %}
+</div>
+</div>
+{% endfor %}
+<center><h3>Checkout</h3></center>
+<center><b>Please review your C-cart items before proceeding with the order payment.</b></center>
+<center>Your total is $ {{total}}</center>
+<center><a href="{% url 'e_app:all_category_products' %}"><p class="btn btn-secondary">Continue shopping</p></a></center>
+
+{% endif %}
+{% endblock %}

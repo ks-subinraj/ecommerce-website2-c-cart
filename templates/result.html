@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}
+Serch results
+{% endblock %}
+
+{% block content %}
+<div>
+    <strong><h3 class="text-center">You have searched for {{query}}</h3></strong>
+</div>
+<br>
+{% for products in product %}
+
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-12 col-sm-12 com-md-12 col-lg-3">
+            <img src={{products.image.url}}>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-7">
+            <h2><b>{{products.name}}</b></h2>
+            <h4>$ {{products.price}}</h4>
+            <h3><b>Product Decription</b></h3>
+            <h4>{{products.desc}}</h4>
+            {% if products.stock <= 0 %}
+            <p class="text-justify">Out of stock</p>
+            {% else %}
+            <a class="btn btn-secondary">Add to cart</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% empty %}
+<div>
+    <strong><p class="text-center">Oops! Nothing matched</p></strong>
+</div>
+{% endfor %}
+{% endblock %}

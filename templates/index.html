@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+C-Cart
+{% endblock %}
+{% block content %}
+<body>
+   
+    {% if category %}
+    <div style="padding-top: 1em;padding-bottom: 1em;">
+        <center><b>Our Product Collections-{{category.name}}</b></center>
+    </div>
+    <img style="width: 100%;" src={{category.image.url}}>
+    {% else %}
+    <div>
+        <img style="width: 100%;" src="{% static 'images/banner.png' %}">
+    </div>
+    {% endif %}
+    <!-- Start Products  -->
+    <div class="products-box">
+        <div class="container">
+            {% if category %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="title-all text-center">
+                        <h1>{{category.name}}</h1>
+                        <p>{{category.desc}}</p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="title-all text-center">
+                        <h1>Our Product Collections</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lacus enim.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="special-menu text-center">
+                       
+                    </div>
+                </div>
+            </div>
+            <div>
+            <div>
+            <div class="row special-list">
+                {% for product in products.object_list %}
+                <div class="col-lg-3 col-md-6 special-grid best-seller">
+                    <div class="products-single fix">
+                        <div class="box-img-hover">
+                            <div class="type-lb">
+                                <p class="sale">Sale</p>
+                            </div>
+                            <a href={{product.get_url}}><img src={{product.image.url}} class="img-fluid" alt="Image"></a>
+                            <div class="mask-icon">
+                                <ul>
+                                    <li><a href="{{product.get_url}}" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
+                                </ul>
+                                <a class="cart" href="{% url 'cart:add_cart' product.id %}">Add to Cart</a>
+                            </div>
+                        </div>
+                        <div class="why-text">
+                            <h5>{{product.name}}</h5>
+                            <h4>{{product.desc|truncatechars:100}}</h4>
+
+                            <h5> $ {{product.price}}</h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+                <div class="">
+                    <div class="text-center">
+                        {% if products.has_previous %}
+                        <a href="?page={{products.previous_page_number}}"><<</a>
+                        {% endif %}
+                        {% for pg in products.paginator.page_range %}
+                        <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} activate {% endif %}">{{pg}}</a>
+                        {% endfor %}
+                        {% if products.has_next %}
+                        <a href="?page={{products.next_page_number}}">>></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+
+   
+</body>
+{% endblock %}
+</html>
